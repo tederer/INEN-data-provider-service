@@ -14,7 +14,7 @@
    ],
    "scripts": {
       "start": "node src/Webserver.js",
-      "grunt": ".\\node_modules\\.bin\\grunt"
+      "grunt": "./node_modules/.bin/grunt"
    },
    "dependencies": {
       "express": "4.x",
