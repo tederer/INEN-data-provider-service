@@ -1,0 +1,35 @@
+{
+   "name": "data_provider_service",
+   "version": "0.1.0",
+   "description": "This services receives the temperature values from the LoRa gateway, adds the corresponding geo location to each record and makes the latest data available via a REST API",
+   "private": true,
+   "author": {
+      "name": "Thomas Ederer",
+      "email": "2210781006@fh-burgenland.at"
+   },
+   "licenses": [
+      {
+         "type": "MIT"
+      }
+   ],
+   "scripts": {
+      "start": "node src/Webserver.js",
+      "grunt": ".\\node_modules\\.bin\\grunt"
+   },
+   "dependencies": {
+      "express": "4.x",
+      "body-parser": "1.20.2",
+      "swagger-ui-dist" : "4.18.3"
+   },
+   "devDependencies": {
+      "grunt": "1.x",
+      "mocha": "10.x",
+      "expect.js": "0.x",
+      "grunt-contrib-clean": "2.x",
+      "grunt-contrib-jshint": "3.x",
+      "grunt-mocha-test": "0.x"
+   },
+   "engines": {
+      "node": ">=18.x"
+   }
+}

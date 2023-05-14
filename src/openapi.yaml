@@ -1,0 +1,99 @@
+openapi: 3.0.3
+info:
+  title: Data Provider Service
+  description: |-
+    This services receives the temperature values from the LoRa gateway, adds the corresponding geo location and timestamp to each record and makes the latest data available.
+  version: 0.1.0
+paths:
+  /sensordata:
+    post:
+      summary: post a new sensor value
+      description: The LoRa gateway uses it to transmit new values.
+      operationId: postValue
+      requestBody:
+        description: The message consists of the sensors ID and the temperature in °C.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                sensorId:
+                  type: string
+                  example: 'sensor1'
+                temperature:
+                  description: the temperature in °C
+                  type: number
+                  example: 4.5
+
+      responses:
+        '200':
+          description: The sensor with the provided ID exists and the new values was accepted.
+
+        '400':
+          description: The provides sensor ID is not correct.
+
+  /sensordata/{sensorId}:
+    get:
+      summary: get the latest temperature received from the sensor with the provided ID.
+      description: Returns the latest temperatature of the sensor.
+      operationId: getValue
+      parameters: 
+        - name: sensorId
+          in: path
+          description: ID of the sensor
+          required: true
+          schema:
+            type: string
+
+      responses:
+        '200':
+          description: An object containing the version and start time of the service.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sensorId:
+                    type: string
+                    example: 'sensor1'
+                  timestamp:
+                    description: "elapsed milliseconds since January 1, 1970, UTC"
+                    type: number
+                    example: 1684067496437
+                  temperature:
+                    description: "in °C"
+                    type: number
+                    example: 4.5
+                  geolocation:
+                    type: object
+                    properties:
+                      longitude:
+                        type: number
+                        example: 16.8
+                      latitude:
+                        type: number
+                        example: 48.1
+        '204':
+          description: The provided ID is correct but there is currently no value available.
+
+        '400':
+          description: The provides sensor ID is not correct.
+  /info:
+    get:
+      summary: get service related informations
+      description: Returns the version and startup time of the service. 
+      operationId: getServiceInfo
+      responses:
+        '200':
+          description: An object containing the version and start time of the service.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  version:
+                    type: string
+                    example: '0.1.0'
+                  start:
+                    type: string
+                    example: '2022-11-28T18:21:34.846Z'
