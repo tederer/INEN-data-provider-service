@@ -26,7 +26,7 @@ var swaggerInitScriptContent;
 
 var webserverPort                   = process.env.WEBSERVER_PORT ?? DEFAULT_PORT;
 var activateSwagger                 = process.env.ACTIVATE_SWAGGER === 'true';
-var valueTimeoutInSeconds           = typeof process.env.TIMEOUT_IN_SEC ?? DEFAULT_VALUE_TIMEOUT_IN_SEC;
+var valueTimeoutInSeconds           = process.env.TIMEOUT_IN_SEC ?? DEFAULT_VALUE_TIMEOUT_IN_SEC;
 var logLevel                        = common.logging.Level[process.env.LOG_LEVEL ?? DEFAULT_LOG_LEVEL];
 
 var app                             = express();
