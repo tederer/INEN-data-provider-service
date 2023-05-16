@@ -1,4 +1,4 @@
-/* global dataprovider, assertNamespace */
+/* global dataprovider, assertNamespace, common, __dirname, process */
 
 require('./common/NamespaceUtils.js');
 require('./common/logging/LoggingSystem.js');
