@@ -7,7 +7,7 @@ var bodyParser                      = require('body-parser');
 var pathToSwaggerUi                 = require('swagger-ui-dist').absolutePath();
 var fs                              = require('fs');
 
-const DEFAULT_PORT                  = 80;
+const DEFAULT_PORT                  = 8100;
 const DEFAULT_VALUE_TIMEOUT_IN_SEC  = 5 * 60;
 const DEFAULT_LOG_LEVEL             = 'INFO';
 
@@ -31,7 +31,6 @@ var logLevel                        = common.logging.Level[process.env.LOG_LEVEL
 
 var app                             = express();
 var info                            = {start: (new Date()).toISOString()};
-var configuration                   = new dataprovider.Configuration();
 
 var latestValues                    = {};
 var timeouts                        = {};
@@ -76,6 +75,8 @@ var restartTimeout = function restartTimeout(sensorId) {
 };
 
 common.logging.LoggingSystem.setMinLogLevel(logLevel);
+LOGGER.logInfo('log level   = ' + logLevel.description);
+var configuration = new dataprovider.Configuration();
 initInfo();
 
 try {
@@ -83,8 +84,6 @@ try {
 } catch(e) {
    LOGGER.logError('failed to read content of ' + swaggerInitScriptPath + ': ' + e);
 }
-
-LOGGER.logInfo('log level   = ' + logLevel.description);
 
 app.use(bodyParser.json({ type: 'application/json' })); // makes JSON data (sent in HTTP header) available in request.body
 

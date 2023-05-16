@@ -28,7 +28,7 @@ COPY --from=buildStage /usr/src/app/src/ ./src/
 COPY --from=buildStage /usr/src/app/package.json .
 
 # Add metadata to the image to describe which port the container is listening on at runtime.
-EXPOSE 80
+EXPOSE 8100
 
 # Set executable to run on container start.
 ENTRYPOINT ["npm", "start"]

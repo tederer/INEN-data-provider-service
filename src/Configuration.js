@@ -1,42 +1,52 @@
 /* global dataprovider, assertNamespace */
 
 require('./common/NamespaceUtils.js');
+require('./common/logging/LoggingSystem.js');
 
 assertNamespace('dataprovider');
 
 dataprovider.Configuration = function Configuration() {
-   var config = {
-      'arduino': {
-         geolocation: {
-            longitude: 16.822859899870274,
-            latitude:  47.954155443258976
-         }
-      },
-      'sensor1': {
-         geolocation: {
-            longitude: 16.82379644619579,
-            latitude:  47.95404620544281
-         }
-      },
-      'sensor2': {
-         geolocation: {
-            longitude: 16.82279896886495,
-            latitude:  47.952296393788174
-         }
-      },
-      'sensor3': {
-         geolocation: {
-            longitude: 16.821973644982076,
-            latitude:  47.9522319616078
-         }
-      }
+   const CONFIG_FILENAME    = 'sensors.json';
+   const LOGGER             = common.logging.LoggingSystem.createLogger('Configuration');
+
+   var fs                   = require('fs');
+   var sensorConfigFilePath = __dirname + '/../' + CONFIG_FILENAME;
+   var sensorConfig;
+
+   var isValidConfigEntry = function isValidConfigEntry(config, key) {
+      var sensorCfg = config[key];
+      return   (typeof sensorCfg                       === 'object') &&
+               (typeof sensorCfg.geolocation           === 'object') &&
+               (typeof sensorCfg.geolocation.longitude === 'number') &&
+               (typeof sensorCfg.geolocation.latitude  === 'number');
+   };
+
+   var isValidSensorConfig = function isValidSensorConfig(config) {
+      return   (typeof config               === 'object') &&
+               (typeof Object.keys(config)  === 'object') &&
+               (Object.keys(config).reduce((accu, key) => {
+                  return accu && isValidConfigEntry(config, key);
+               }, true));
    };
 
    this.containsSensor = function containsSensor(sensorId) {
-      return config[sensorId] !== undefined;
+      return sensorConfig[sensorId] !== undefined;
    };
 
    this.getGeoLocationOfSensor = function getGeoLocationOfSensor(sensorId) {
-      return config[sensorId].geolocation;
+      return sensorConfig[sensorId].geolocation;
    };
+
+   try {
+      var sensorConfigFileContent = fs.readFileSync(sensorConfigFilePath, 'utf8');
+      sensorConfig                = JSON.parse(sensorConfigFileContent);
+      if (!isValidSensorConfig(sensorConfig)) {
+          throw 'invalid sensor configuration';
+      }
+      LOGGER.logInfo('configured sensor IDs: ' + Object.keys(sensorConfig));
+      
+   } catch(error) {
+      LOGGER.logError('failed to read & parse configuration file (' + sensorConfigFilePath + '): ' + error);
+      process.exit(1);
+   }   
 };
