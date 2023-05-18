@@ -26,6 +26,7 @@ RUN npm --production install
 # Copy build artifacts
 COPY --from=buildStage /usr/src/app/src/ ./src/
 COPY --from=buildStage /usr/src/app/package.json .
+COPY --from=buildStage /usr/src/app/sensors.json .
 
 # Add metadata to the image to describe which port the container is listening on at runtime.
 EXPOSE 8100

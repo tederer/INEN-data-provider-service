@@ -47,6 +47,7 @@ var initInfo = function initInfo() {
       var fileContent = fs.readFileSync(__dirname + '/../package.json', 'utf8');
       var packageJson = JSON.parse(fileContent);
       info.version    = packageJson.version;
+      LOGGER.logInfo('version ' + info.version);
    } catch(e) {
       LOGGER.logError('failed to read version: ' + e);
    }
@@ -75,9 +76,9 @@ var restartTimeout = function restartTimeout(sensorId) {
 };
 
 common.logging.LoggingSystem.setMinLogLevel(logLevel);
-LOGGER.logInfo('log level   = ' + logLevel.description);
-var configuration = new dataprovider.Configuration();
 initInfo();
+LOGGER.logInfo('log level = ' + logLevel.description);
+var configuration = new dataprovider.Configuration();
 
 try {
    swaggerInitScriptContent = fs.readFileSync(swaggerInitScriptPath, 'utf8').replace('${url}', '/' + openApiYamlFilename);
@@ -163,5 +164,5 @@ app.all('/*', (request, response) => {
 });
 
 app.listen(webserverPort, () => {
-   LOGGER.logInfo('web server listening on port ' + webserverPort);
+   LOGGER.logInfo('listening on port ' + webserverPort);
 });
