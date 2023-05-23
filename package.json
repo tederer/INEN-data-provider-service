@@ -1,6 +1,6 @@
 {
    "name": "data_provider_service",
-   "version": "0.4.0",
+   "version": "0.6.0",
    "description": "This services receives the temperature values from the LoRa gateway, adds the corresponding geo location to each record and makes the latest data available via a REST API",
    "private": true,
    "author": {
