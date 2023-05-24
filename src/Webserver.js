@@ -113,7 +113,7 @@ app.post('/sensordata', (request, response) => {
    var data = request.body;
 
    try {
-      LOGGER.logInfo('POST request (message=' + JSON.stringify(data));
+      LOGGER.logInfo('POST request (message=' + JSON.stringify(data) + ')');
    } catch(e) {}
 
    setResponseHeader(response);
